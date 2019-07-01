@@ -17,10 +17,8 @@ public class VarTextObject implements LocaleObject {
 
     private Text head;
     private Map<Integer, Text> tails = new LinkedHashMap<>();
-    private String text;
 
     private VarTextObject(String text) {
-        this.text = text;
         val matcher = VAR_TEXT.matcher(text);
         while (matcher.find()) {
             if (head == null) {
@@ -37,8 +35,7 @@ public class VarTextObject implements LocaleObject {
         return new VarTextObject(text);
     }
 
-    @Override
-    public void send(MessageReceiver receiver, Object... args) {
+    private Text build(Object... args) {
         val builder = Text.builder().append(head);
         for (val entry : tails.entrySet()) {
             val num = entry.getKey();
@@ -46,27 +43,24 @@ public class VarTextObject implements LocaleObject {
             builder.append(Arg.of(at(args, num)).toText());
             builder.append(append);
         }
-        val text = builder.build();
-        receiver.sendMessage(text);
+        return builder.build();
     }
 
     private Object at(Object[] arr, int idx) {
-        return arr.length > idx ? arr[idx] : "{"+idx+"}";
+        return arr.length > idx ? arr[idx] : "{" + idx + "}";
+    }
+
+    @Override
+    public void send(MessageReceiver receiver, Object... args) {
+        receiver.sendMessage(build(args));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T raw() {
-        return ((T) text);
+    public <T> T mapAs(TypeToken<T> typeToken, Object... args) {
+        if (typeToken.equals(TypeToken.of(Text.class)))
+            return (T) build(args);
+        else return null;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T mapAs(TypeToken<T> typeToken) {
-        if (typeToken.equals(TypeToken.of(String.class)))
-            return raw();
-        else if (typeToken.equals(TypeToken.of(Text.class))) {
-            return (T) Text.of(text);
-        } else return null;
-    }
 }

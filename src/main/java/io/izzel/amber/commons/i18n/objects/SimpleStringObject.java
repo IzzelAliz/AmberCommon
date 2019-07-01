@@ -24,17 +24,9 @@ public class SimpleStringObject implements LocaleObject {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T raw() {
-        return ((T) TextSerializers.FORMATTING_CODE.serialize(text));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T mapAs(TypeToken<T> typeToken) {
-        if (typeToken.equals(TypeToken.of(String.class))) {
-            return raw();
-        } else if (typeToken.equals(TypeToken.of(Text.class))) {
-            return ((T) text);
+    public <T> T mapAs(TypeToken<T> typeToken, Object... args) {
+        if (typeToken.equals(TypeToken.of(Text.class))) {
+            return (T) text;
         } else {
             return null;
         }

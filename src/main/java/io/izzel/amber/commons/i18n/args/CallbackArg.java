@@ -8,7 +8,7 @@ import org.spongepowered.api.text.action.TextActions;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor(staticName = "of")
-public class CallbackArg implements Arg {
+class CallbackArg implements Arg {
 
     private final Arg arg;
     private final Consumer<CommandSource> callback;

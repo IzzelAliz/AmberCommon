@@ -7,26 +7,6 @@ public interface LocaleObject {
 
     void send(MessageReceiver receiver, Object... args);
 
-    <T> T raw();
-
-    <T> T mapAs(TypeToken<T> typeToken);
-
-    static LocaleObject nothing() {
-        return new LocaleObject() {
-            @Override
-            public void send(MessageReceiver receiver, Object... args) {
-            }
-
-            @Override
-            public <T> T raw() {
-                return null;
-            }
-
-            @Override
-            public <T> T mapAs(TypeToken<T> typeToken) {
-                return null;
-            }
-        };
-    }
+    <T> T mapAs(TypeToken<T> typeToken, Object... args);
 
 }
