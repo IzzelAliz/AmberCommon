@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+group = 'io.izzel.amber'
+version = '1.0.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+}
+
+dependencies {
+    compile 'org.spongepowered:spongeapi:7.1.0'
+    compile 'org.spongepowered:spongecommon:7.1.0:dev'
+    compile 'org.projectlombok:lombok:1.18.2'
+}
+
