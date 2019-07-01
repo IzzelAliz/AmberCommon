@@ -38,7 +38,7 @@ class AmberLocaleMapper {
                 }
                 return ListObject.of(builder.build());
             case NULL:
-                return LocaleObject.nothing();
+                return SimpleStringObject.of("null");
         }
         throw new RuntimeException(String.valueOf(node.getValue()));
     }
@@ -48,7 +48,7 @@ class AmberLocaleMapper {
     }
 
     private void saveMap(ConfigurationNode node, Map<String, LocaleObject> map) {
-        val key = Arrays.stream(node.getPath()).map(Object::toString).collect(Collectors.joining("."));
+        val key = Arrays.stream(node.getPath()).map(String::valueOf).collect(Collectors.joining("."));
         switch (node.getValueType()) {
             case LIST:
             case SCALAR:
