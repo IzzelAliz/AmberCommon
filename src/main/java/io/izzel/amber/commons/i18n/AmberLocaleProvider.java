@@ -41,12 +41,13 @@ class AmberLocaleProvider implements AmberLocale {
     public void reload() throws Exception {
         val container = Sponge.getPluginManager().fromInstance(plugin).orElseThrow(RuntimeException::new);
         val node = AmberLocaleLoader.load(container, info);
-        locales = AmberLocaleMapper.asMap(node);
+        locales = new AmberLocaleMapper().asMap(node);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Optional<T> get(String path, Object... args) {
-        return Optional.ofNullable(locales.get(path).raw());
+        return (Optional<T>) Optional.ofNullable(locales.get(path).mapAs(TypeToken.of(Text.class), args));
     }
 
     @Override

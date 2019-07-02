@@ -2,6 +2,7 @@ package io.izzel.amber.commons.i18n;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.ImplementedBy;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.channel.MessageReceiver;
 
 import java.util.Optional;
@@ -16,6 +17,10 @@ public interface AmberLocale {
     <T> Optional<T> get(String path, Object... args);
 
     <T> Optional<T> getAs(String path, TypeToken<T> typeToken);
+
+    default void log(String path, Object... args) {
+        to(Sponge.getServer().getConsole(), path, args);
+    }
 
     default <T> T get(String path, T def, Object... args) {
         return this.<T>get(path, args).orElse(def);

@@ -1,12 +1,14 @@
 package io.izzel.amber.commons.i18n.args;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TranslatableText;
 
+@ToString
 @RequiredArgsConstructor(staticName = "of")
 class EntityArg implements Arg {
 

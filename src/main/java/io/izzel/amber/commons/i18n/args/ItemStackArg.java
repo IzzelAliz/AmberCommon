@@ -1,6 +1,7 @@
 package io.izzel.amber.commons.i18n.args;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.val;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -8,6 +9,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.action.TextActions;
 
+@ToString
 @RequiredArgsConstructor(staticName = "of")
 class ItemStackArg implements Arg {
 

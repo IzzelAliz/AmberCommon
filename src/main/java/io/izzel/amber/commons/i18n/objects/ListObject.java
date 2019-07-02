@@ -2,14 +2,16 @@ package io.izzel.amber.commons.i18n.objects;
 
 import com.google.common.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageReceiver;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
 @RequiredArgsConstructor(staticName = "of")
-public class ListObject implements LocaleObject {
+public class ListObject extends LocaleObject {
 
     private final List<LocaleObject> list;
 
