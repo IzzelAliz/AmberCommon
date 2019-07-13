@@ -6,6 +6,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @FunctionalInterface
@@ -25,6 +26,10 @@ public interface Arg {
         if (object instanceof ItemStack) return ItemStackArg.of(((ItemStack) object));
         if (object instanceof Entity) return EntityArg.of(((Entity) object));
         return StringArg.of(String.valueOf(object));
+    }
+
+    static Arg user(UUID uuid) {
+        return UserArg.of(uuid);
     }
 
 }
