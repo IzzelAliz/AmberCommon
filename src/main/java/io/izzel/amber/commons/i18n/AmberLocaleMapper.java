@@ -8,6 +8,7 @@ import io.izzel.amber.commons.i18n.objects.typed.HoverObject;
 import io.izzel.amber.commons.i18n.objects.typed.RefObject;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import lombok.var;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -82,8 +83,17 @@ class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
                 val hover = parseObject(node.getNode("hover"));
                 return HoverObject.of(hover);
             case "click":
-                val command = node.getNode("command").getString();
-                return ClickObject.of(command);
+                var command = node.getNode("command").getString();
+                if (command != null) {
+                    return ClickObject.of(command, false);
+                } else {
+                    command = node.getNode("suggest").getString();
+                    if (command != null) {
+                        return ClickObject.of(command, true);
+                    } else {
+                        log.warn("Provide 'command' or 'suggest' in a click node, parsing node {}", Arrays.toString(node.getPath()));
+                    }
+                }
             default:
                 log.warn("Unknown type {} while parsing node {}", type, Arrays.toString(node.getPath()));
                 return SimpleStringObject.of("null");

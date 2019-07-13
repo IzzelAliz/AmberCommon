@@ -16,6 +16,7 @@ import org.spongepowered.api.text.channel.MessageReceiver;
 public class ClickObject extends LocaleObject implements MetaObject {
 
     private final String command;
+    private final boolean suggest;
 
     @Override
     public void send(MessageReceiver receiver, Object... args) {
@@ -29,7 +30,8 @@ public class ClickObject extends LocaleObject implements MetaObject {
 
     @Override
     public Text apply(Text text, Object... args) {
-        return Text.builder().append(text).onClick(TextActions.runCommand(replace(command, args))).build();
+        return Text.builder().append(text).onClick(suggest ? TextActions.suggestCommand(command)
+                : TextActions.runCommand(replace(command, args))).build();
     }
 
     // this is a lot faster than the internal formatter
