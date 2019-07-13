@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.val;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.action.TextActions;
@@ -13,13 +13,13 @@ import org.spongepowered.api.text.action.TextActions;
 @RequiredArgsConstructor(staticName = "of")
 class ItemStackArg implements Arg {
 
-    private final ItemStack item;
+    private final ItemStackSnapshot item;
 
     @Override
     public Text toText() {
         val builder = Text.builder();
         builder.append(item.get(Keys.DISPLAY_NAME).orElseGet(() -> TranslatableText.of(item.getTranslation())));
-        builder.onHover(TextActions.showItem(item.createSnapshot()));
+        builder.onHover(TextActions.showItem(item));
         return builder.build();
     }
 
