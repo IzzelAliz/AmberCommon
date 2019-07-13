@@ -16,7 +16,7 @@ public abstract class LocaleObject {
 
     private Map<Integer, MetaObject> meta;
 
-    protected final Text applyMeta(int idx, Text text, Object... args) {
+    protected Text applyMeta(int idx, Text text, Object... args) {
         return meta == null ? text : meta.getOrDefault(idx, SELF).apply(text, args);
     }
 

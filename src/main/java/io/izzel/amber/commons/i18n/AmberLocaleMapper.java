@@ -3,6 +3,8 @@ package io.izzel.amber.commons.i18n;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.izzel.amber.commons.i18n.objects.*;
+import io.izzel.amber.commons.i18n.objects.typed.ClickObject;
+import io.izzel.amber.commons.i18n.objects.typed.HoverObject;
 import io.izzel.amber.commons.i18n.objects.typed.RefObject;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -76,6 +78,12 @@ class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
                 val ref = RefObject.of(name);
                 references.put(name, ref.getCallback());
                 return ref;
+            case "hover":
+                val hover = parseObject(node.getNode("hover"));
+                return HoverObject.of(hover);
+            case "click":
+                val command = node.getNode("command").getString();
+                return ClickObject.of(command);
             default:
                 log.warn("Unknown type {} while parsing node {}", type, Arrays.toString(node.getPath()));
                 return SimpleStringObject.of("null");

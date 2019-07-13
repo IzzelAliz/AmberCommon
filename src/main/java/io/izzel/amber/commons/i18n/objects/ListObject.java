@@ -3,6 +3,8 @@ package io.izzel.amber.commons.i18n.objects;
 import com.google.common.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import lombok.val;
+import lombok.var;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageReceiver;
 
@@ -11,7 +13,7 @@ import java.util.stream.Collectors;
 
 @ToString
 @RequiredArgsConstructor(staticName = "of")
-public class ListObject extends LocaleObject {
+public class ListObject extends LocaleObject implements MetaObject {
 
     private final List<LocaleObject> list;
 
@@ -32,6 +34,17 @@ public class ListObject extends LocaleObject {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Text apply(Text text, Object... args) {
+        var ret = text;
+        for (val object : list) {
+            if (object instanceof MetaObject) {
+                ret = ((MetaObject) object).apply(ret, args);
+            }
+        }
+        return ret;
     }
 
 }

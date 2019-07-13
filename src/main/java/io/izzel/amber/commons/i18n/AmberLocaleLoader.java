@@ -4,6 +4,7 @@ import io.izzel.amber.commons.i18n.annotation.Locale;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.api.Sponge;
@@ -33,9 +34,30 @@ class AmberLocaleLoader {
         val builder = HoconConfigurationLoader.builder().setPath(destFile).build();
         val fileConf = builder.load();
         val assetConf = HoconConfigurationLoader.builder().setURL(asset.getUrl()).build().load();
-        fileConf.mergeValuesFrom(assetConf);
+        merge(fileConf, assetConf);
         builder.save(fileConf);
         return fileConf;
+    }
+
+    private void merge(ConfigurationNode to, ConfigurationNode from) {
+        switch (from.getValueType()) {
+            case LIST:
+            case NULL:
+            case SCALAR:
+                if (to.getValue() == null) to.setValue(from.getValue());
+                break;
+            case MAP:
+                if (from.getChildrenMap().keySet().contains("type") || from.getChildrenMap().keySet().contains("meta")) {
+                    if (to.getValue() == null) to.setValue(from.getValue());
+                } else {
+                    for (val entry : from.getChildrenMap().entrySet()) {
+                        val key = entry.getKey();
+                        val node = entry.getValue();
+                        merge(to.getNode(key), node);
+                    }
+                }
+                break;
+        }
     }
 
 }
