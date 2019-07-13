@@ -27,6 +27,7 @@ public interface Arg {
         if (object instanceof ItemStack) return ItemStackArg.of(((ItemStack) object).createSnapshot());
         if (object instanceof ItemStackSnapshot) return ItemStackArg.of((ItemStackSnapshot) object);
         if (object instanceof Entity) return EntityArg.of((Entity) object);
+        if (object instanceof Text) return () -> ((Text) object);
         return StringArg.of(String.valueOf(object));
     }
 
