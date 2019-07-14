@@ -17,8 +17,8 @@ import java.util.Optional;
 class AmberLocaleProvider implements AmberLocale {
 
     private Map<String, LocaleObject> locales;
-    private Object plugin;
-    private Locale info;
+    private final Object plugin;
+    private final Locale info;
 
     @SneakyThrows
     AmberLocaleProvider(Object plugin, Locale info) {
@@ -38,7 +38,7 @@ class AmberLocaleProvider implements AmberLocale {
     }
 
     @Override
-    public void reload() throws Exception {
+    public void reload() {
         val container = Sponge.getPluginManager().fromInstance(plugin).orElseThrow(RuntimeException::new);
         val node = AmberLocaleLoader.load(container, info);
         locales = new AmberLocaleMapper(this).asMap(node);

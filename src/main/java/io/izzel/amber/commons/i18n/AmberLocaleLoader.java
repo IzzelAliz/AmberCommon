@@ -4,7 +4,6 @@ import io.izzel.amber.commons.i18n.annotation.Locale;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.val;
-import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.api.Sponge;
@@ -39,7 +38,7 @@ class AmberLocaleLoader {
         return fileConf;
     }
 
-    private void merge(ConfigurationNode to, ConfigurationNode from) {
+    private void merge(CommentedConfigurationNode to, CommentedConfigurationNode from) {
         switch (from.getValueType()) {
             case LIST:
             case NULL:
@@ -48,7 +47,10 @@ class AmberLocaleLoader {
                 break;
             case MAP:
                 if (from.getChildrenMap().keySet().contains("type") || from.getChildrenMap().keySet().contains("meta")) {
-                    if (to.getValue() == null) to.setValue(from.getValue());
+                    if (to.getValue() == null) {
+                        to.setValue(from.getValue());
+                        from.getComment().ifPresent(to::setComment);
+                    }
                 } else {
                     for (val entry : from.getChildrenMap().entrySet()) {
                         val key = entry.getKey();

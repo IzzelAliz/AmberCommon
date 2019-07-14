@@ -32,7 +32,7 @@ class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
     private LocaleObject parseObject(ConfigurationNode node) {
         switch (node.getValueType()) {
             case SCALAR:
-                val s = node.getValue().toString();
+                val s = Objects.requireNonNull(node.getValue()).toString();
                 if (VAR_TEXT.matcher(s).matches()) {
                     return VarTextObject.of(s).holder(provider);
                 } else {

@@ -42,9 +42,9 @@ class SimpleAmberLocale implements AmberLocale {
     };
 
     private Object plugin;
-    private PluginContainer container;
-    private Game game;
-    private Locale info;
+    private final PluginContainer container;
+    private final Game game;
+    private final Locale info;
 
     @Inject
     public SimpleAmberLocale(PluginContainer container, Game game, SpongeInjectionPoint point) {
