@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
 
-    private static final Pattern VAR_TEXT = Pattern.compile("(.*\\{\\d+}.*)+");
+    private static final Pattern VAR_TEXT = Pattern.compile("(.*\\{-?\\d+}.*)+");
     private static final Set<String> META_OBJECT = ImmutableSet.of("text", "meta");
 
     private final AmberLocaleProvider provider;

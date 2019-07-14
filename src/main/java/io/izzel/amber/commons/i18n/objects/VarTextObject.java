@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @ToString
 public class VarTextObject extends LocaleObject implements MetaObject {
 
-    private static final Pattern VAR_TEXT = Pattern.compile("\\{(\\d+)}(((?!\\{\\d+}).)*)");
+    private static final Pattern VAR_TEXT = Pattern.compile("\\{(-?\\d+)}(((?!\\{-?\\d+}).)*)");
 
     private Text head;
     private Map<Integer, Text> tails = new LinkedHashMap<>();
