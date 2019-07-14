@@ -16,7 +16,7 @@ public interface AmberLocale {
 
     <T> Optional<T> get(String path, Object... args);
 
-    <T> Optional<T> getAs(String path, TypeToken<T> typeToken);
+    <T> Optional<T> getAs(String path, TypeToken<T> typeToken, Object... args);
 
     default void log(String path, Object... args) {
         to(Sponge.getServer().getConsole(), path, args);
@@ -26,8 +26,8 @@ public interface AmberLocale {
         return this.<T>get(path, args).orElse(def);
     }
 
-    default <T> T getAs(String path, T def, TypeToken<T> typeToken) {
-        return this.getAs(path, typeToken).orElse(def);
+    default <T> T getAs(String path, T def, TypeToken<T> typeToken, Object... args) {
+        return this.getAs(path, typeToken, args).orElse(def);
     }
 
 }

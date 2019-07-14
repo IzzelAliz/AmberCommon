@@ -1,6 +1,7 @@
 package io.izzel.amber.commons.i18n.objects;
 
 import com.google.common.reflect.TypeToken;
+import io.izzel.amber.commons.i18n.AmberLocale;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageReceiver;
 
@@ -14,6 +15,7 @@ public abstract class LocaleObject {
 
     public abstract <T> T mapAs(TypeToken<T> typeToken, Object... args);
 
+    protected AmberLocale holder;
     private Map<Integer, MetaObject> meta;
 
     protected Text applyMeta(int idx, Text text, Object... args) {
@@ -22,6 +24,11 @@ public abstract class LocaleObject {
 
     public final void setMeta(Map<Integer, MetaObject> meta) {
         this.meta = meta;
+    }
+
+    public LocaleObject holder(AmberLocale locale) {
+        this.holder = locale;
+        return this;
     }
 
 }

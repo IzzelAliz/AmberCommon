@@ -1,5 +1,6 @@
 package io.izzel.amber.commons.i18n.args;
 
+import io.izzel.amber.commons.i18n.AmberLocale;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.val;
@@ -16,7 +17,7 @@ class ItemStackArg implements Arg {
     private final ItemStackSnapshot item;
 
     @Override
-    public Text toText() {
+    public Text toText(AmberLocale holder, Object... args) {
         val builder = Text.builder();
         builder.append(item.get(Keys.DISPLAY_NAME).orElseGet(() -> TranslatableText.of(item.getTranslation())));
         builder.onHover(TextActions.showItem(item));

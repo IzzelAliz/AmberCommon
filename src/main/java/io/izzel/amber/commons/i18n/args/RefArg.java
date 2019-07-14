@@ -2,20 +2,17 @@ package io.izzel.amber.commons.i18n.args;
 
 import com.google.common.reflect.TypeToken;
 import io.izzel.amber.commons.i18n.AmberLocale;
-import io.izzel.amber.commons.i18n.objects.SimpleStringObject;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.spongepowered.api.text.Text;
 
-@ToString
 @RequiredArgsConstructor(staticName = "of")
-class StringArg implements Arg {
+public class RefArg implements Arg {
 
-    private final String text;
+    private final String node;
 
     @Override
     public Text toText(AmberLocale holder, Object... args) {
-        return SimpleStringObject.of(text).mapAs(TypeToken.of(Text.class), args);
+        return holder.getAs(node, TypeToken.of(Text.class), args).orElse(Text.of("{Arg: " + node + "}"));
     }
 
 }

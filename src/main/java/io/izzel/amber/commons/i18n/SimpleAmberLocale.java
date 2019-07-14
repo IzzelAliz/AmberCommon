@@ -83,9 +83,9 @@ class SimpleAmberLocale implements AmberLocale {
     }
 
     @Override
-    public <T> Optional<T> getAs(String path, TypeToken<T> typeToken) {
+    public <T> Optional<T> getAs(String path, TypeToken<T> typeToken, Object... args) {
         checkState();
-        return game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).getAs(path, typeToken);
+        return game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).getAs(path, typeToken, args);
     }
 
 }

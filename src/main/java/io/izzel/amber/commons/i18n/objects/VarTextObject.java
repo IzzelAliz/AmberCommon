@@ -42,7 +42,7 @@ public class VarTextObject extends LocaleObject implements MetaObject {
         for (val entry : tails.entrySet()) {
             val num = entry.getKey();
             val append = entry.getValue();
-            builder.append(applyMeta(num, Arg.of(at(args, num)).toText(), args));
+            builder.append(applyMeta(num, Arg.of(at(args, num)).toText(holder, args), args));
             builder.append(append);
         }
         return applyMeta(-1, builder.build(), args);

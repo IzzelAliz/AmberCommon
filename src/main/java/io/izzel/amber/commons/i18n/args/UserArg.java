@@ -1,5 +1,6 @@
 package io.izzel.amber.commons.i18n.args;
 
+import io.izzel.amber.commons.i18n.AmberLocale;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.spongepowered.api.Sponge;
@@ -16,7 +17,7 @@ public class UserArg implements Arg {
     private final UUID uuid;
 
     @Override
-    public Text toText() {
+    public Text toText(AmberLocale holder, Object... args) {
         return Sponge.getServiceManager().provideUnchecked(UserStorageService.class).get(uuid).map(User::getName)
                 .map(Text::of).orElse(Text.of("Unknown user " + uuid));
     }

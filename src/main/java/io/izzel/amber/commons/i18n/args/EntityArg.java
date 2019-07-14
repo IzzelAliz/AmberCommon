@@ -1,5 +1,6 @@
 package io.izzel.amber.commons.i18n.args;
 
+import io.izzel.amber.commons.i18n.AmberLocale;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.spongepowered.api.data.key.Keys;
@@ -15,7 +16,7 @@ class EntityArg implements Arg {
     private final Entity entity;
 
     @Override
-    public Text toText() {
+    public Text toText(AmberLocale holder, Object... args) {
         return entity.get(Keys.DISPLAY_NAME).orElseGet(() -> {
             if (entity instanceof Player) return Text.of(((Player) entity).getName());
             else return TranslatableText.of(entity.getTranslation());

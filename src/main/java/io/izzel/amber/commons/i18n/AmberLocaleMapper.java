@@ -6,6 +6,7 @@ import io.izzel.amber.commons.i18n.objects.*;
 import io.izzel.amber.commons.i18n.objects.typed.ClickObject;
 import io.izzel.amber.commons.i18n.objects.typed.HoverObject;
 import io.izzel.amber.commons.i18n.objects.typed.RefObject;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import lombok.var;
@@ -18,10 +19,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
 
     private static final Pattern VAR_TEXT = Pattern.compile("(.*\\{\\d+}.*)+");
     private static final Set<String> META_OBJECT = ImmutableSet.of("text", "meta");
+
+    private final AmberLocaleProvider provider;
 
     private final Map<String, Consumer<LocaleObject>> references = new HashMap<>();
 
@@ -30,7 +34,7 @@ class AmberLocaleMapper { // todo 这个硬编码真丑，得重写
             case SCALAR:
                 val s = node.getValue().toString();
                 if (VAR_TEXT.matcher(s).matches()) {
-                    return VarTextObject.of(s);
+                    return VarTextObject.of(s).holder(provider);
                 } else {
                     return SimpleStringObject.of(s);
                 }

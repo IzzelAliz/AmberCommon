@@ -1,5 +1,6 @@
 package io.izzel.amber.commons.i18n.args;
 
+import io.izzel.amber.commons.i18n.AmberLocale;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.spongepowered.api.command.CommandSource;
@@ -16,7 +17,7 @@ class CallbackArg implements Arg {
     private final Consumer<CommandSource> callback;
 
     @Override
-    public Text toText() {
-        return Text.builder().append(arg.toText()).onClick(TextActions.executeCallback(callback)).build();
+    public Text toText(AmberLocale holder, Object... args) {
+        return Text.builder().append(arg.toText(holder, args)).onClick(TextActions.executeCallback(callback)).build();
     }
 }
