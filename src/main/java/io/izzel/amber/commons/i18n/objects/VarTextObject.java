@@ -49,7 +49,7 @@ public class VarTextObject extends LocaleObject implements MetaObject {
     }
 
     private Object at(Object[] arr, int idx) {
-        return arr.length > idx ? arr[idx] : "{" + idx + "}";
+        return (arr.length > idx && idx > -1) ? arr[idx] : "{" + idx + "}";
     }
 
     @Override
