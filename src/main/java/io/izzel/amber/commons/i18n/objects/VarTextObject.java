@@ -15,10 +15,12 @@ import java.util.regex.Pattern;
 @ToString
 public class VarTextObject extends LocaleObject implements MetaObject {
 
-    private static final Pattern VAR_TEXT = Pattern.compile("\\{(-?\\d+)}(((?!\\{-?\\d+}).)*)");
+    private static final Pattern VAR_TEXT =
+        Pattern.compile("((&[0-9a-fA-Fk-oK-OrR])+)?\\{(-?\\d+)}(((?!\\{-?\\d+}).(?!(&[0-9a-fA-Fk-oK-OrR])+))*)");
 
     private Text head;
     private Map<Integer, Text> tails = new LinkedHashMap<>();
+    private Map<Integer, Text> format = new LinkedHashMap<>();
 
     private VarTextObject(String text) {
         val matcher = VAR_TEXT.matcher(text);
@@ -27,9 +29,11 @@ public class VarTextObject extends LocaleObject implements MetaObject {
                 val idx = matcher.start();
                 head = TextSerializers.FORMATTING_CODE.deserialize(text.substring(0, idx));
             }
-            val num = Integer.parseInt(matcher.group(1));
-            val append = matcher.group(2);
+            val color = TextSerializers.FORMATTING_CODE.deserialize(matcher.group(1) + " ");
+            val num = Integer.parseInt(matcher.group(3));
+            val append = matcher.group(4);
             tails.put(num, TextSerializers.FORMATTING_CODE.deserialize(append));
+            format.put(num, color);
         }
     }
 
@@ -42,7 +46,9 @@ public class VarTextObject extends LocaleObject implements MetaObject {
         for (val entry : tails.entrySet()) {
             val num = entry.getKey();
             val append = entry.getValue();
-            builder.append(applyMeta(num, Arg.of(at(args, num)).toText(holder, args), args));
+            val color = format.get(num);
+            builder.append(applyMeta(num, Arg.of(at(args, num)).toText(holder, args), args))
+                .color(color.getColor()).style(color.getStyle());
             builder.append(append);
         }
         return applyMeta(-1, builder.build(), args);
