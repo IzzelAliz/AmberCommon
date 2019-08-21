@@ -4,7 +4,6 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import io.izzel.amber.commons.i18n.annotation.Locale;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.GameState;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.channel.MessageReceiver;
 import org.spongepowered.common.inject.SpongeInjectionPoint;
@@ -12,6 +11,7 @@ import org.spongepowered.common.inject.SpongeInjectionPoint;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 class SimpleAmberLocale implements AmberLocale {
 
     private static final Locale DEF = new Locale() {
@@ -41,51 +41,36 @@ class SimpleAmberLocale implements AmberLocale {
         }
     };
 
-    private Object plugin;
     private final PluginContainer container;
-    private final Game game;
     private final Locale info;
+    private final AmberLocaleService service;
 
     @Inject
     public SimpleAmberLocale(PluginContainer container, Game game, SpongeInjectionPoint point) {
         this.container = container;
         this.info = Optional.ofNullable(point.getAnnotation(Locale.class)).orElse(DEF);
-        this.game = game;
-    }
-
-    private void checkState() {
-        if (game.getState().compareTo(GameState.POST_INITIALIZATION) >= 0) {
-            if (plugin == null) {
-                plugin = container.getInstance().orElseThrow(IllegalStateException::new);
-            }
-            if (!game.getServiceManager().isRegistered(AmberLocaleService.class)) {
-                game.getServiceManager().setProvider(plugin, AmberLocaleService.class, new SimpleAmberLocaleService());
-            }
-        } else throw new IllegalStateException();
+        game.getServiceManager().setProvider(container, AmberLocaleService.class,
+            service = new SimpleAmberLocaleService());
     }
 
     @Override
     public void to(MessageReceiver receiver, String path, Object... args) {
-        checkState();
-        game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).to(receiver, path, args);
+        service.get(container.getInstance().get(), info).to(receiver, path, args);
     }
 
     @Override
     public void reload() throws Exception {
-        checkState();
-        game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).reload();
+        service.get(container.getInstance().get(), info).reload();
     }
 
     @Override
     public <T> Optional<T> get(String path, Object... args) {
-        checkState();
-        return game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).get(path, args);
+        return service.get(container.getInstance().get(), info).get(path, args);
     }
 
     @Override
     public <T> Optional<T> getAs(String path, TypeToken<T> typeToken, Object... args) {
-        checkState();
-        return game.getServiceManager().provideUnchecked(AmberLocaleService.class).get(plugin, info).getAs(path, typeToken, args);
+        return service.get(container.getInstance().get(), info).getAs(path, typeToken, args);
     }
 
 }
