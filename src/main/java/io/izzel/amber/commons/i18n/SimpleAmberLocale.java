@@ -11,7 +11,6 @@ import org.spongepowered.common.inject.SpongeInjectionPoint;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 class SimpleAmberLocale implements AmberLocale {
 
     private static final Locale DEF = new Locale() {
@@ -59,22 +58,22 @@ class SimpleAmberLocale implements AmberLocale {
 
     @Override
     public void to(MessageReceiver receiver, String path, Object... args) {
-        service.get(container.getInstance().get(), info).to(receiver, path, args);
+        service.get(container, info).to(receiver, path, args);
     }
 
     @Override
     public void reload() throws Exception {
-        service.get(container.getInstance().get(), info).reload();
+        service.get(container, info).reload();
     }
 
     @Override
     public <T> Optional<T> get(String path, Object... args) {
-        return service.get(container.getInstance().get(), info).get(path, args);
+        return service.get(container, info).get(path, args);
     }
 
     @Override
     public <T> Optional<T> getAs(String path, TypeToken<T> typeToken, Object... args) {
-        return service.get(container.getInstance().get(), info).getAs(path, typeToken, args);
+        return service.get(container, info).getAs(path, typeToken, args);
     }
 
 }
