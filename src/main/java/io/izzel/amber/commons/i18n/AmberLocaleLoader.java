@@ -17,13 +17,12 @@ class AmberLocaleLoader {
 
     @SneakyThrows
     CommentedConfigurationNode load(PluginContainer container, Locale info) {
-        val plugin = container.getInstance().orElseThrow(RuntimeException::new);
         val current = java.util.Locale.getDefault().toString().toLowerCase();
         val destPath = String.format(info.path(), current);
         val destFile = Paths.get("config", container.getId(), destPath);
         val assetLocation = String.format(info.assetLocation(), current);
-        val asset = Sponge.getAssetManager().getAsset(plugin, assetLocation)
-                .orElseGet(() -> Sponge.getAssetManager().getAsset(plugin, info.def())
+        val asset = Sponge.getAssetManager().getAsset(container, assetLocation)
+                .orElseGet(() -> Sponge.getAssetManager().getAsset(container, info.def())
                         .orElseThrow(() -> new RuntimeException(String.format("No default locale %s present.", info.def()))));
         if (!Files.exists(destFile)) {
             Files.createDirectories(destFile.getParent());
@@ -46,7 +45,7 @@ class AmberLocaleLoader {
                 if (to.getValue() == null) to.setValue(from.getValue());
                 break;
             case MAP:
-                if (from.getChildrenMap().keySet().contains("type") || from.getChildrenMap().keySet().contains("meta")) {
+                if (from.getChildrenMap().containsKey("type") || from.getChildrenMap().containsKey("meta")) {
                     if (to.getValue() == null) {
                         to.setValue(from.getValue());
                         from.getComment().ifPresent(to::setComment);
