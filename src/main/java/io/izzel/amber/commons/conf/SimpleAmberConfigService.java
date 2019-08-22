@@ -16,7 +16,8 @@ class SimpleAmberConfigService implements AmberConfigService {
 
     @Inject
     public SimpleAmberConfigService(PluginContainer container) {
-        Sponge.getServiceManager().setProvider(container, AmberConfigService.class, this);
+        if (!Sponge.getServiceManager().isRegistered(AmberConfigService.class))
+            Sponge.getServiceManager().setProvider(container, AmberConfigService.class, this);
     }
 
     @Override

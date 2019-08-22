@@ -49,8 +49,12 @@ class SimpleAmberLocale implements AmberLocale {
     public SimpleAmberLocale(PluginContainer container, Game game, SpongeInjectionPoint point) {
         this.container = container;
         this.info = Optional.ofNullable(point.getAnnotation(Locale.class)).orElse(DEF);
-        game.getServiceManager().setProvider(container, AmberLocaleService.class,
-            service = new SimpleAmberLocaleService());
+        if (!game.getServiceManager().isRegistered(AmberLocaleService.class)) {
+            game.getServiceManager().setProvider(container, AmberLocaleService.class,
+                service = new SimpleAmberLocaleService());
+        } else {
+            service = game.getServiceManager().provideUnchecked(AmberLocaleService.class);
+        }
     }
 
     @Override
