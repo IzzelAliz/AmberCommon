@@ -47,12 +47,12 @@ class AmberLocaleProvider implements AmberLocale {
     @SuppressWarnings("unchecked")
     @Override
     public <T> Optional<T> get(String path, Object... args) {
-        return (Optional<T>) Optional.ofNullable(locales.get(path).mapAs(TypeToken.of(Text.class), args));
+        return (Optional<T>) Optional.ofNullable(locales.get(path)).map(it -> it.mapAs(TypeToken.of(Text.class), args));
     }
 
     @Override
     public <T> Optional<T> getAs(String path, TypeToken<T> typeToken, Object... args) {
-        return Optional.ofNullable(locales.get(path).mapAs(typeToken, args));
+        return Optional.ofNullable(locales.get(path)).map(it -> it.mapAs(typeToken, args));
     }
 
 }
