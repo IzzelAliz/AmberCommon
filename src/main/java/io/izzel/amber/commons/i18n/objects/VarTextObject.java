@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class VarTextObject extends LocaleObject implements MetaObject {
 
     private static final Pattern VAR_TEXT =
-        Pattern.compile("((&[0-9a-fA-Fk-oK-OrR])+)?\\{(-?\\d+)}(((?!(&[0-9a-fA-Fk-oK-OrR])+\\{(-?\\d+)}).)*)");
+        Pattern.compile("((&[0-9a-fA-Fk-oK-OrR])+)?\\{(-?\\d+)}(((?!((&[0-9a-fA-Fk-oK-OrR])+)?\\{(-?\\d+)}).)*)");
 
     private Text head;
     private Map<Integer, Text> tails = new LinkedHashMap<>();
