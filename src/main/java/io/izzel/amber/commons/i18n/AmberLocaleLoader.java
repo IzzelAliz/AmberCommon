@@ -42,7 +42,10 @@ class AmberLocaleLoader {
             case LIST:
             case NULL:
             case SCALAR:
-                if (to.getValue() == null) to.setValue(from.getValue());
+                if (to.getValue() == null) {
+                    to.setValue(from.getValue());
+                    from.getComment().ifPresent(to::setComment);
+                }
                 break;
             case MAP:
                 if (from.getChildrenMap().containsKey("type") || from.getChildrenMap().containsKey("meta")) {
