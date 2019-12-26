@@ -44,10 +44,9 @@ class AmberLocaleProvider implements AmberLocale {
         locales = new AmberLocaleMapper(this).asMap(node);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> Optional<T> get(String path, Object... args) {
-        return (Optional<T>) Optional.ofNullable(locales.get(path)).map(it -> it.mapAs(TypeToken.of(Text.class), args));
+    public Optional<Text> get(String path, Object... args) {
+        return Optional.ofNullable(locales.get(path)).map(it -> it.mapAs(TypeToken.of(Text.class), args));
     }
 
     @Override

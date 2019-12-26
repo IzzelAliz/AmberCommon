@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import io.izzel.amber.commons.i18n.annotation.Locale;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageReceiver;
 import org.spongepowered.common.inject.SpongeInjectionPoint;
 
@@ -67,7 +68,7 @@ class SimpleAmberLocale implements AmberLocale {
     }
 
     @Override
-    public <T> Optional<T> get(String path, Object... args) {
+    public Optional<Text> get(String path, Object... args) {
         return service.get(container, info).get(path, args);
     }
 
