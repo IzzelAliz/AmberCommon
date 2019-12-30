@@ -66,7 +66,7 @@ class ConfigValueProvider implements Provider<ConfigValue<?>> {
         if (wrapperType instanceof ParameterizedType) {
             val valueType = ((ParameterizedType) wrapperType).getActualTypeArguments()[0];
             val typeToken = TypeToken.of(valueType);
-            val value = holder.get(node, typeToken);
+            val value = holder.get(node, typeToken).orElse(null);
             return new ListenableConfigValue(node, typeToken, value, holder);
         } else {
             throw new IllegalArgumentException("Type parameter is not present in an @Setting field.");
